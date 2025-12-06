@@ -70,7 +70,18 @@ class MusicLibrary:
         fileName : str
             The file name of the CSV file to be read.
         """
-        pass
+        with open(fileName, "r", encoding = 'latin-1') as file:
+            for line in file:
+                parts = line.strip().split(",")
+                artist = parts[0]
+                album_num = int(parts[1])
+                track_num = int(parts[2])
+                self.data.append([artist, album_num, track_num])
+            
+            self.rows = len(self.data)
+            if self.data:
+                self.cols = 3
+
 
     def printData(self):
         """
@@ -83,7 +94,7 @@ class MusicLibrary:
         Shuffle the data stored in the library.
         refer to the random package
         """
-        pass
+        random.shuffle(self.data)
 
     @timeFunc
     def binarySearch(self, key, keyIndex):
@@ -124,7 +135,7 @@ class MusicLibrary:
         pass
 
     @timeFunc
-    def bubbleSort(self, keyIndex):
+    def bubbleSort(self, keyIndex: int):
         """
         Sort the data using the bubble sort algorithm based on a specific column index.
         self.data will have to be in sorted order after calling this function.
@@ -134,9 +145,14 @@ class MusicLibrary:
         keyIndex : int
             The column index to sort by.
         """
-        pass
+        n = self.rows
+        for i in range(n-1):
+            for j in range(n-i-1):
+                if self.data[j][keyIndex] > self.data[j+1][keyIndex]:
+                    self.data[j], self.data[j+1] = self.data[j+1], self.data[j]
 
-    def merge(self, L, R, keyIndex):
+
+    def merge(self, L: list, R: list, keyIndex):
         """
         Merge two sorted sublists into a single sorted list.
         This is the helper function for merge sort.
@@ -156,7 +172,21 @@ class MusicLibrary:
             The merged and sorted list.
         """
         # Implementation details...
-        pass
+        result = []
+        i = j = 0
+
+        while i < len(L) and j < len(R):
+            if L[i][keyIndex] < R[j][keyIndex]:
+                result.append(L[i])
+                i += 1
+            else:
+                result.append(R[j])
+                j += 1
+
+        result.extend(L[i:])
+        result.extend(R[j:])
+
+        return result
 
     @timeFunc
     def mergeSort(self, keyIndex):
@@ -170,14 +200,24 @@ class MusicLibrary:
         keyIndex : int
             The column index to sort by.
         """
-        pass
+        self.data = self._mergeSort(self.data, keyIndex)
 
     def _mergeSort(self, arr, keyIndex):
 
         # This is the helper function for merge sort.
         # You may change the name of this function or even not have it.
         # This is a helper method for mergeSort
-        pass
+        if len(arr) <= 1:
+            return arr
+        
+        mid = len(arr) // 2
+        L = arr[:mid]
+        R = arr[mid:]
+
+        sortedL = self._mergeSort(L, keyIndex)
+        sortedR = self._mergeSort(R, keyIndex)
+
+        return self.merge(sortedL, sortedR, keyIndex)
 
     @timeFunc
     def quickSort(self, keyIndex):
@@ -192,12 +232,39 @@ class MusicLibrary:
             The column index to sort by.
         """
         # Implementation details...
+        if self.rows > 0:
+            self._quickSort(self.data, 0, self.rows-1, keyIndex)
         pass
 
-    def _quickSort(self, arr, keyIndex):
-        # This is a helper method for quickSort
-        # ...
-        pass
+    def _quickSort(self, arr, low, high, keyIndex):
+        '''
+        Parameters
+        ----------
+        arr : list
+            The list need to be sort.
+        low : int
+            The index th
+
+        '''
+        if low < high:
+            pi = self._partition(arr, low, high, keyIndex)
+
+            self._quickSort(arr, low, pi-1, keyIndex)
+            self._quickSort(arr, pi+1, high, keyIndex)
+
+    def _partition(self, arr, low, high, keyIndex):
+        pi = arr[high][keyIndex]
+        left = low
+        right = low
+        while right < high:
+            if arr[right][keyIndex] < pi:
+                arr[left], arr[right] = arr[right], arr[left]
+                left += 1
+            right += 1
+
+        arr[left], arr[high] = arr[high], arr[left]
+        return left
+
 
     def comment(self):
         '''
