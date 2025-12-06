@@ -295,8 +295,13 @@ class MusicLibrary:
         Based on the result you find about the run time of calling different function,
         Write a small paragraph (more than 50 words) about time complexity, and print it. 
         '''
-        # print(you comment)
-        pass
+        print("For searching, sequential search runs in O(n) time and does not require sorted data, while binary search operates in "
+        "O(log n) time but only works correctly on pre-sorted data." \
+        "For sorting, Bubble sort runs in O(n^2) time and is generally the least efficient because every pair of adjacent elements " \
+        "may need to be compared repeatedly; however, it uses O(1) space. Merge sort consistently performs in O(n log n) time and is " \
+        "stable, but it requires additional O(n) space due to the merging process. Quick sort also has an average time complexity of " \
+        "O(n log n) and works in-place with O(log n) space, but its worst-case time is O(n^2), especially when many elements have the " \
+        "same value.")
 
 
 
@@ -321,6 +326,7 @@ def main():
     myLibrary.shuffleData()
     myLibrary.mergeSort(keyIndex=idx)
     myLibrary.printData()
+    myLibrary.comment()
 
 if __name__ == "__main__":
     main()
