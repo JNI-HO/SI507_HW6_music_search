@@ -87,7 +87,11 @@ class MusicLibrary:
         """
         Print the data attribute stored in the library instance in a formatted manner.
         """
-        pass
+        print(f"{'Artist Name':<30} {'Albums':<10} {'Tracks':<10}")
+        print("-" * 50)
+        for row in self.data:
+            print(f"{row[0]:<30} {row[1]:<10} {row[2]:<10}")
+
 
     def shuffleData(self):
         """
@@ -97,7 +101,7 @@ class MusicLibrary:
         random.shuffle(self.data)
 
     @timeFunc
-    def binarySearch(self, key, keyIndex):
+    def binarySearch(self, key: int | str, keyIndex):
         """
         Perform a binary search on the data.
 
@@ -113,7 +117,23 @@ class MusicLibrary:
         int
             The index of the row where the key is found, or -1 if not found.
         """
-        pass
+        left = 0
+        right = self.rows - 1
+
+        while left <= right:
+            mid = (left + right) // 2
+            mid_value = self.data[mid][keyIndex]
+
+            if mid_value == key:
+                return mid
+
+            if mid_value < key:
+                left = mid + 1
+            else: 
+                right = mid - 1
+
+        return -1
+
 
     @timeFunc
     def seqSearch(self, key, keyIndex):
@@ -132,7 +152,11 @@ class MusicLibrary:
         int
             The index of the row where the key is found, or -1 if not found.
         """
-        pass
+        for i in range(self.rows):
+            if self.data[i][keyIndex] == key:
+                return i
+        return -1
+
 
     @timeFunc
     def bubbleSort(self, keyIndex: int):
@@ -286,8 +310,8 @@ def main():
 
     idx = 0
     myLibrary.data.sort(key = lambda data: data[idx])
-    myLibrary.seqSearch(key="30 Seconds To Mars", keyIndex=idx)
-    myLibrary.binarySearch(key="30 Seconds To Mars", keyIndex=idx)
+    myLibrary.seqSearch(key = "30 Seconds To Mars", keyIndex=idx)
+    myLibrary.binarySearch(key = "30 Seconds To Mars", keyIndex=idx)
 
     idx = 2
     myLibrary.shuffleData()
